@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <!-- Updated link to static file using Flask's url_for -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_thankyou.css') }}">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Thank You for Submitting Your Details!</h1>
+        <button onclick="location.href='/'">Home</button>
+    </div>
+</body>
+</html>

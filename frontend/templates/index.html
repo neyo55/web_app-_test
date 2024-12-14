@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Collection Form</title>
+    <!-- Updated link to static files using Flask's url_for -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Submit Your Details</h1>
+        <form id="dataForm" method="POST" action="/" onsubmit="return validateForm();">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name.label }} 
+                {{ form.name(class="form-control", pattern="^[A-Za-z\s]+$", title="Name must contain only letters and spaces.") }}
+                {% for error in form.name.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label }} 
+                {{ form.email(class="form-control", type="email", required=True) }}
+                {% for error in form.email.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.phone.label }} 
+                {{ form.phone(class="form-control", pattern="^0[0-9]{10}$", title="Enter a valid phone number (e.g., 08012345678).") }}
+                {% for error in form.phone.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.dob.label }} 
+                {{ form.dob(class="form-control", type="date", required=True) }}
+                {% for error in form.dob.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.gender.label }} 
+                {{ form.gender(class="form-control", required=True) }}
+                {% for error in form.gender.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.address.label }} 
+                {{ form.address(class="form-control", maxlength="200") }}
+                {% for error in form.address.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="agree">I agree to the terms and conditions</label>
+                <input type="checkbox" id="agree" name="agree" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Custom alert modal -->
+    <div id="customAlert" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+        <p id="alertMessage"></p>
+        <button onclick="closeAlert()">OK</button>
+    </div>
+</body>
+</html>

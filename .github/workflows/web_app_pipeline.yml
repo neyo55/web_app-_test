@@ -1,0 +1,84 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Run the workflow on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Optional: Run workflow for pull requests to main branch
+  workflow_dispatch:  # Allow manual triggering of the workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      SERVER_IP: 54.217.141.168  # Replace with your server's public IP
+      SERVER_USER: ubuntu
+      SSH_KEY: ${{ secrets.SSH_KEY }}  # Add your private SSH key to GitHub Secrets
+      BRANCH: main  # Branch to deploy from
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Set up SSH
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      # Transfer files to the server
+      - name: Transfer Project Files
+        run: |
+          rsync -avz --exclude='.git/' --exclude='.github/' ./ ${SERVER_USER}@${SERVER_IP}:/home/${SERVER_USER}/
+
+      # Execute master.sh to install prerequisites
+      - name: Run Master Script
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} "chmod +x /home/${SERVER_USER}/master.sh && sudo /home/${SERVER_USER}/master.sh"
+
+      # Run database setup script
+      - name: Set Up Database
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} "chmod +x /home/${SERVER_USER}/database/db_setup.sh && sudo /home/${SERVER_USER}/database/db_setup.sh"
+
+      # Run backend setup script
+      - name: Set Up Backend
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} "chmod +x /home/${SERVER_USER}/backend/app_setup.sh && sudo /home/${SERVER_USER}/backend/app_setup.sh"
+
+      # Run web setup script
+      - name: Set Up Frontend
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} "chmod +x /home/${SERVER_USER}/frontend/web_setup.sh && sudo /home/${SERVER_USER}/frontend/web_setup.sh"
+
+      # Run monitoring setup script
+      - name: Set Up Monitoring
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} "chmod +x /home/${SERVER_USER}/backend/monitoring.sh && sudo /home/${SERVER_USER}/backend/monitoring.sh"
+
+      # Run alert manager setup script
+      - name: Set Up Alertmanager
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} "chmod +x /home/${SERVER_USER}/backend/alertmanager_setup.sh && sudo /home/${SERVER_USER}/backend/alertmanager_setup.sh"
+
+      # Verify deployment
+      - name: Verify Deployment
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} "curl -I http://54.217.141.168 || exit 1"
+          ssh ${SERVER_USER}@${SERVER_IP} "curl -I http://54.217.141.168:9090 || exit 1"
+          ssh ${SERVER_USER}@${SERVER_IP} "curl -I http://54.217.141.168:9093 || exit 1"
+          ssh ${SERVER_USER}@${SERVER_IP} "curl -I http://54.217.141.168:3000 || exit 1"
+
+      # Send success notification
+      - name: Notify Success
+        if: success()
+        run: echo "Deployment successful!"
+
+      # Send failure notification
+      - name: Notify Failure
+        if: failure()
+        run: echo "Deployment failed!"
