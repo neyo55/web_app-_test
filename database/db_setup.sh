@@ -3,7 +3,7 @@
 # mysql_setup.sh
 
 # Set variables
-PROJECT_DIR="/home/ubuntu/database"
+PROJECT_DIR=$(dirname "$(realpath "$0")")
 LOG_FILE="/var/log/db_setup.log"
 ENV_FILE="$PROJECT_DIR/.env"  # Updated to use .env in the same directory
 MYSQL_CONF_FILE="/etc/mysql/mysql.conf.d/mysqld.cnf"
@@ -22,16 +22,21 @@ log() {
 echo "Starting new MySQL setup log..." > "$LOG_FILE"
 
 # Load environment variables from .env file
-if [ -f "$ENV_FILE" ]; then
-    while IFS= read -r line || [ -n "$line" ]; do
-        if [[ ! $line =~ ^# && $line == *=* ]]; then
-            export "$line"
-        fi
-    done < "$ENV_FILE"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    ENV_FILE="$PROJECT_DIR/.env"
+elif [ -f "/home/ubuntu/project-directory/database/.env" ]; then
+    ENV_FILE="/home/ubuntu/project-directory/database/.env"
+    log "Using .env file from $ENV_FILE"
 else
-    log ".env file not found."
+    log ".env file not found in expected locations."
     exit 1
 fi
+
+while IFS= read -r line || [ -n "$line" ]; do
+    if [[ ! $line =~ ^# && $line == *=* ]]; then
+        export "$line"
+    fi
+done < "$ENV_FILE"
 
 # Check if MySQL is installed
 if command_exists mysql; then
