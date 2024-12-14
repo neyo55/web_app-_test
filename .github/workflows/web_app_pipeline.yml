@@ -109,7 +109,7 @@ jobs:
       - name: Collect Logs
         run: |
           mkdir -p logs
-          scp -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP}:/home/${SERVER_USER}/project-directory/**/*.log logs/
+          rsync -avz --include="*.log" --exclude="*" -e "ssh -o StrictHostKeyChecking=no" ${SERVER_USER}@${SERVER_IP}:/home/${SERVER_USER}/project-directory/ logs/
 
       # Verify deployment
       - name: Verify Deployment
