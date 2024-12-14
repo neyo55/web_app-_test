@@ -9,13 +9,14 @@ export DEBIAN_FRONTEND=noninteractive
 exec > /var/log/web_setup.log 2>&1
 
 # Variables
+FRONTEND_DIR="/home/ubuntu/project-directory/frontend"
 NGINX_CONF="/etc/nginx/sites-available/web_app"
 NGINX_CONF_LINK="/etc/nginx/sites-enabled/web_app"
 DOMAIN_OR_IP="54.217.141.168"  # Update this with the actual DNS or IP
 ERROR_PAGE="/usr/share/nginx/html/50x.html"
 ADMINER_URL="https://www.adminer.org/latest.php"
 ADMINER_FILE="/var/www/html/adminer.php"
-ENV_FILE="/home/ubuntu/frontend/.env"
+ENV_FILE="$FRONTEND_DIR/.env"
 
 # Function to create or update a file
 create_or_update_file() {
@@ -41,8 +42,9 @@ if [[ -f "$ENV_FILE" ]]; then
             export "$line"
         fi
     done < "$ENV_FILE"
+    echo "Environment variables loaded successfully."
 else
-    echo ".env file not found in /home/ubuntu/frontend."
+    echo ".env file not found in $FRONTEND_DIR."
     exit 1
 fi
 
