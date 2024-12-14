@@ -9,7 +9,8 @@ export DEBIAN_FRONTEND=noninteractive
 exec > /var/log/app_setup.log 2>&1
 
 # Variables
-APP_DIR="/home/ubuntu/backend"  # Update with the actual application directory
+APP_DIR="/home/ubuntu/project-directory/backend"  # Update with the actual application directory
+ENV_FILE="$APP_DIR/.env"  
 SERVICE_NAME="web_app"
 GUNICORN_CONFIG="$APP_DIR/gunicorn_config.py"
 
