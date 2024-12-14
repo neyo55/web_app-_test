@@ -24,6 +24,19 @@ exit_script() {
     exit 1
 }
 
+# Load environment variables from .env file
+if [[ -f "$ENV_FILE" ]]; then
+    log "Loading environment variables from $ENV_FILE..."
+    while IFS= read -r line || [ -n "$line" ]; do
+        if [[ ! $line =~ ^# && $line == *=* ]]; then
+            export "$line"
+        fi
+    done < "$ENV_FILE"
+else
+    log ".env file not found in $APP_DIR."
+    exit 1
+fi
+
 # Function to install Gunicorn
 install_gunicorn() {
     log "Checking for Gunicorn installation..."

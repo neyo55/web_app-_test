@@ -15,6 +15,7 @@ DOMAIN_OR_IP="54.217.141.168"  # Update this with the actual DNS or IP
 ERROR_PAGE="/usr/share/nginx/html/50x.html"
 ADMINER_URL="https://www.adminer.org/latest.php"
 ADMINER_FILE="/var/www/html/adminer.php"
+ENV_FILE="/home/ubuntu/frontend/.env"
 
 # Function to create or update a file
 create_or_update_file() {
@@ -31,6 +32,19 @@ create_or_update_file() {
         exit 1
     fi
 }
+
+# Load environment variables from .env file
+if [[ -f "$ENV_FILE" ]]; then
+    echo "Loading environment variables from $ENV_FILE..."
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        if [[ ! $line =~ ^# && $line == *=* ]]; then
+            export "$line"
+        fi
+    done < "$ENV_FILE"
+else
+    echo ".env file not found in /home/ubuntu/frontend."
+    exit 1
+fi
 
 # Custom error page content
 ERROR_PAGE_CONTENT='<!DOCTYPE html>
