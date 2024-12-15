@@ -28,8 +28,8 @@ exit_script() {
 # Load environment variables
 ENV_FILE="/home/ubuntu/backend/.env"
 if [[ -f "$ENV_FILE" ]]; then
-    export $(grep -v '^#' .env | xargs)
-    # export $(grep -v '^#' "$ENV_FILE" | xargs)
+    export $(grep -v '^#' "$ENV_FILE" | xargs)
+
 else
     echo ".env file not found in $ENV_FILE"
     exit 1

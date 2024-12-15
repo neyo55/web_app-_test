@@ -24,7 +24,8 @@ echo "Starting new MySQL setup log..." > "$LOG_FILE"
 # Load environment variables
 ENV_FILE="/home/ubuntu/database/.env"
 if [[ -f "$ENV_FILE" ]]; then
-    export $(grep -v '^#' .env | xargs)
+    export $(grep -v '^#' "$ENV_FILE" | xargs)
+
 else
     echo ".env file not found in $ENV_FILE"
     exit 1
