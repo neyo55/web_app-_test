@@ -48,7 +48,14 @@ chmod 600 ~/.ssh/authorized_keys
 # To view the private key
 cat ~/.ssh/id_rsa
 
+cat ~/.ssh/id_rsa.pub
 
+echo "<PASTE_PUBLIC_KEY_HERE>" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+
+# Command to test the private key 
+ssh -i "ubuntu-instance-key.pem" ubuntu@34.248.180.179
 
 sudo cp /path/to/favicon.ico /var/www/html/static/
 sudo systemctl reload nginx

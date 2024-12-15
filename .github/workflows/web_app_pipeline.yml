@@ -151,9 +151,6 @@ jobs:
       - name: Transfer Project Files
         run: |
           rsync -avz -e "ssh -v" --exclude='.github/' ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}
-          cat /home/ubuntu/database/.env
-          cat /home/ubuntu/backend/.env
-          cat /home/ubuntu/frontend/.env
           
       # Verify file transfer
       - name: Verify .env Files
