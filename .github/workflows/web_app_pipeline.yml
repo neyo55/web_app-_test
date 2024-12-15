@@ -150,7 +150,7 @@ jobs:
       # Transfer files to the server
       - name: Transfer Project Files
         run: |
-          rsync -avz -e "ssh -v" --exclude='.github/' ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}
+          rsync -avz -e "ssh -v" --exclude='.github/' --include='.*' ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}
           
       # Verify file transfer
       - name: Verify .env Files
