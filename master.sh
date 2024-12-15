@@ -48,8 +48,8 @@ for dir in /home/ubuntu/frontend /home/ubuntu/backend /home/ubuntu/database; do
     sudo -u ubuntu mkdir -p "$dir" || { echo "Error: Failed to create directory $dir."; exit 1; }
 done
 
-sudo chown -R ubuntu:www-data /home/ubuntu/backend || { echo "Error: Failed to set ownership for /home/ubuntu/backend."; exit 1; }
-sudo chmod -R 755 /home/ubuntu/backend || { echo "Error: Failed to set permissions for /home/ubuntu/backend."; exit 1; }
+sudo chown -R ubuntu:www-data /home/ubuntu || { echo "Error: Failed to set ownership for /home/ubuntu."; exit 1; }
+sudo chmod -R 755 /home/ubuntu || { echo "Error: Failed to set permissions for /home/ubuntu."; exit 1; }
 
 ###### Web Installations ######
 echo "Starting web installations..."
@@ -97,7 +97,7 @@ fi
 
 # Install additional Python packages
 echo "Installing additional Python packages..."
-sudo pip3 install Flask-WTF email-validator prometheus_client || { echo "Error: Failed to install additional Python packages."; exit 1; }
+sudo pip3 install gunicorn Flask-WTF email-validator prometheus_client redis || { echo "Error: Failed to install additional Python packages."; exit 1; }
 
 ###### Database Installations ######
 echo "Starting database installations..."

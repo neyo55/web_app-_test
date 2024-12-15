@@ -81,7 +81,7 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-          - '54.217.141.168:9093'
+          - '34.248.180.179:9093'
 
 rule_files:
   - "/usr/local/prometheus/alert_rules.yml"
@@ -138,8 +138,8 @@ echo "Prometheus configuration updated to include Alertmanager."
 
 # Output access instructions
 echo "Alertmanager setup complete. Access your monitoring tools:"
-echo "- Prometheus: http://54.217.141.168:9090"
-echo "- Alertmanager: http://54.217.141.168:9093"
+echo "- Prometheus: http://34.248.180.179:9090"
+echo "- Alertmanager: http://34.248.180.179:9093"
 echo "Alerts will be sent to: kbneyo55@gmail.com"
 
 echo "Setup finished successfully."

@@ -95,15 +95,15 @@ global:
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-      - targets: ['54.217.141.168:9090']
+      - targets: ['34.248.180.179:9090']
 
   - job_name: 'node_exporter'
     static_configs:
-      - targets: ['54.217.141.168:9100']
+      - targets: ['34.248.180.179:9100']
 
   - job_name: 'app'
     static_configs:
-      - targets: ['54.217.141.168:5000']
+      - targets: ['34.248.180.179:5000']
 EOL
 
 # Restart Prometheus to apply configuration
@@ -112,8 +112,8 @@ echo "Prometheus configuration updated."
 
 # Output access instructions
 echo "Installation complete. Access your monitoring tools:"
-echo "- Prometheus: http://54.217.141.168:9090"
-echo "- Grafana: http://54.217.141.168:3000 (Default login: admin / admin)"
-echo "- Node Exporter metrics: http://54.217.141.168:9100/metrics"
+echo "- Prometheus: http://34.248.180.179:9090"
+echo "- Grafana: http://34.248.180.179:3000 (Default login: admin / admin)"
+echo "- Node Exporter metrics: http://34.248.180.179:9100/metrics"
 
 echo "Monitoring tools setup finished successfully."

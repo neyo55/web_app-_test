@@ -7,7 +7,7 @@ bind = "0.0.0.0:5000"
 workers = (multiprocessing.cpu_count() * 2) + 1
 
 # Timeout settings: Adjust according to the nature of your application
-timeout = 30  # Lower the timeout for better performance and to avoid hanging workers
+timeout = 120  # Lower the timeout for better performance and to avoid hanging workers
 
 # Logging settings for production
 loglevel = "info"  # Use "info" or "warning" for production to reduce log noise

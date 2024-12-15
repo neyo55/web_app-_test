@@ -1,0 +1,99 @@
+Firstly copy the content of the id_rsa.pub on your local machine to the authorized_keys on the remote server.
+
+
+sudo mysql
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootpass123';
+FLUSH PRIVILEGES;
+
+EXIT;
+
+
+
+amtool --alertmanager.url=http://54.229.161.56:9093 config
+
+scp -r ~/Desktop/test-server/frontend backend database master.sh monitoring.sh alertmanager_setup.sh ubuntu@54.229.161.56:/home/ubuntu/
+
+scp -r ~/Desktop/test-server/master.sh ubuntu@54.229.161.56:/home/ubuntu/
+
+pip show flask prometheus_client mysql-connector-python python-dotenv gunicorn
+
+sudo pip install -r requirements.txt
+
+# TO CHECK STATUS LOG 
+sudo systemctl status web_app
+sudo systemctl status mysql
+sudo systemctl status redis-server
+sudo systemctl status nginx
+cat /var/log/web_setup.log
+cat /var/log/app_setup.log
+cat /var/log/db_setup.log
+cat /var/log/access.log
+cat /var/log/error.log
+sudo systemctl status prometheus
+sudo systemctl status grafana-server
+sudo systemctl status node_exporter
+
+history | grep alertmanager_setup.sh
+
+# To generate ssh key 
+ssh-keygen -t rsa -b 4096 -C "kbneyo55@gmail.com"
+
+# To verify the key pair
+ls -al ~/.ssh
+
+# Permission to the authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+# To view the private key
+cat ~/.ssh/id_rsa
+
+
+
+sudo cp /path/to/favicon.ico /var/www/html/static/
+sudo systemctl reload nginx
+
+
+
+
+
+ubuntu
+|
+├── master.sh           # master script to install prerequisites 
+|
+|
+├── frontend/           # Web Layer
+│   ├── web_setup.sh    # installs and configure the frontend tools
+│   │                 
+│   ├── static/
+│   │   ├── css/
+│   │   │   ├── style.css
+│   │   │   └── style_thankyou.css
+│   │   └── js/
+│   │       └── script.js
+│   └── templates/
+│       ├── index.html
+│       └── thank_you.html
+│
+├── backend/                      # Application Layer
+│   ├── app.py                    # Flask app
+│   ├── forms.py                  # Form validation
+│   ├── requirements.txt          # Dependencies
+|   ├── monitoring.sh             # installs and configure monitoring tools
+|   ├── alertmanager_setup.sh     # configure alerts 
+│   ├── gunicorn_config.py        # Gunicorn config for app server
+│   ├── .env
+│   └── app_setup.sh              # install and configure backend tools    
+│
+└── database/                     # Database Layer
+    ├── db_setup.sh               # MySQL setup configuration script
+    └── .env
+
+
+
+
+
+
+
+
+ssh -i ubuntu-instance-key.pem ubuntu@54.217.141.168
