@@ -12,7 +12,7 @@ exec > /var/log/web_setup.log 2>&1
 FRONTEND_DIR="/home/ubuntu/frontend"
 NGINX_CONF="/etc/nginx/sites-available/web_app"
 NGINX_CONF_LINK="/etc/nginx/sites-enabled/web_app"
-DOMAIN_OR_IP="34.248.180.179"  # Update this with the actual DNS or IP
+DOMAIN_OR_IP="54.229.9.22"  # Update this with the actual DNS or IP
 ERROR_PAGE="/usr/share/nginx/html/50x.html"
 ADMINER_URL="https://www.adminer.org/latest.php"
 ADMINER_FILE="/var/www/html/adminer.php"
