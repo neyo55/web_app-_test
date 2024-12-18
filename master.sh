@@ -54,6 +54,16 @@ sudo chmod -R 755 /home/ubuntu || { echo "Error: Failed to set permissions for /
 ###### Web Installations ######
 echo "Starting web installations..."
 
+# Certbot Installation with Error Checks
+log "Checking if Certbot is already installed..."
+if command_exists certbot; then
+    log "Certbot is already installed. Skipping installation."
+else
+    log "Installing Certbot and Certbot Nginx plugin..."
+    sudo apt install -y certbot python3-certbot-nginx || { log "Error: Failed to install Certbot."; exit 1; }
+    log "Certbot installation completed successfully."
+fi
+
 # Install Nginx, PHP, and MySQL extensions
 echo "Installing Nginx, PHP, and related dependencies..."
 sudo apt install -y nginx php8.1 php8.1-fpm php8.1-mysql || { echo "Error: Failed to install Nginx, PHP, or MySQL extensions."; exit 1; }
@@ -137,3 +147,87 @@ echo "Installing Python Redis package..."
 sudo pip3 install redis || { echo "Error: Failed to install Python Redis package."; exit 1; }
 
 echo "Master script completed successfully."
+
+
+
+
+
+
+
+
+
+
+# #!/bin/bash
+
+# # master.sh
+
+# # Set non-interactive mode to suppress prompts
+# export DEBIAN_FRONTEND=noninteractive
+
+# # Variables
+# MYSQL_CONF_FILE="/etc/mysql/mysql.conf.d/mysqld.cnf"
+# LOG_FILE="/var/log/master_setup.log"
+
+# # Redirect all output to log file
+# exec > >(tee -a "$LOG_FILE") 2>&1
+
+# # Function to log messages
+# log() {
+#     echo "$(date '+%Y-%m-%d %H:%M:%S') $1"
+# }
+
+# # Function to check if a command exists
+# command_exists() {
+#     command -v "$1" &> /dev/null
+# }
+
+# # Update Ubuntu and install prerequisites
+# log "Updating the package list and installing prerequisites..."
+# sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y || { log "Error: Failed to update and upgrade packages."; exit 1; }
+
+# # Install unattended-upgrades to handle future updates automatically
+# sudo apt install -y unattended-upgrades || { log "Error: Failed to install unattended-upgrades."; exit 1; }
+# echo 'Unattended-Upgrade::Automatic-Reboot "false";' | sudo tee -a /etc/apt/apt.conf.d/50unattended-upgrades
+
+# # Notify if a reboot is required without performing it
+# if [ -f /var/run/reboot-required ]; then
+#     log "====================================================================="
+#     log "A reboot is required to apply kernel updates."
+#     log "Please reboot the system at your convenience to ensure full functionality."
+#     log "====================================================================="
+# fi
+
+# # Certbot Installation with Error Checks
+# log "Checking if Certbot is already installed..."
+# if command_exists certbot; then
+#     log "Certbot is already installed. Skipping installation."
+# else
+#     log "Installing Certbot and Certbot Nginx plugin..."
+#     sudo apt install -y certbot python3-certbot-nginx || { log "Error: Failed to install Certbot."; exit 1; }
+#     log "Certbot installation completed successfully."
+# fi
+
+# # Log files and permissions setup
+# log "Setting up log files..."
+# for log_file in /var/log/web_data.log /var/log/web_setup.log /var/log/app_data.log /var/log/app_setup.log /var/log/db_data.log /var/log/db_setup.log; do
+#     sudo touch "$log_file" || { log "Error: Failed to create $log_file"; exit 1; }
+#     sudo chown ubuntu:ubuntu "$log_file" || { log "Error: Failed to set ownership of $log_file"; exit 1; }
+#     sudo chmod 664 "$log_file" || { log "Error: Failed to set permissions on $log_file"; exit 1; }
+# done
+
+# # Gunicorn log setup
+# log "Setting up Gunicorn logs..."
+# sudo mkdir -p /var/log/gunicorn || { log "Error: Failed to create /var/log/gunicorn directory."; exit 1; }
+# sudo chown -R ubuntu:www-data /var/log/gunicorn || { log "Error: Failed to set ownership for /var/log/gunicorn."; exit 1; }
+# sudo chmod -R 775 /var/log/gunicorn || { log "Error: Failed to set permissions for /var/log/gunicorn."; exit 1; }
+
+# # Create directories under 'ubuntu' user
+# log "Creating project directories..."
+# for dir in /home/ubuntu/frontend /home/ubuntu/backend /home/ubuntu/database; do
+#     sudo -u ubuntu mkdir -p "$dir" || { log "Error: Failed to create directory $dir."; exit 1; }
+# done
+
+# sudo chown -R ubuntu:www-data /home/ubuntu || { log "Error: Failed to set ownership for /home/ubuntu."; exit 1; }
+# sudo chmod -R 755 /home/ubuntu || { log "Error: Failed to set permissions for /home/ubuntu."; exit 1; }
+
+# log "Master script completed successfully."
